@@ -4,6 +4,7 @@
 import { Fn, Stack, StackProps, RemovalPolicy, aws_s3 as s3, aws_s3_deployment as s3deploy, aws_cloudfront as cloudfront, aws_cloudfront_origins as origins, aws_lambda as lambda, aws_iam as iam, Duration, CfnOutput, aws_logs as logs } from 'aws-cdk-lib';
 import { CfnDistribution } from "aws-cdk-lib/aws-cloudfront";
 import { Construct } from 'constructs';
+import { toCamelCase } from './utils';
 import { getOriginShieldRegion } from './origin-shield';
 
 // Stack Parameters
@@ -88,6 +89,7 @@ export class ImageOptimizationStack extends Stack {
     // create bucket for transformed images if enabled in the architecture
     if (STORE_TRANSFORMED_IMAGES === 'true') {
       transformedImageBucket = new s3.Bucket(this, 's3-transformed-image-bucket', {
+        bucketName: 'transformed-' + originalImageBucket.bucketName,
         removalPolicy: RemovalPolicy.DESTROY,
         autoDeleteObjects: true,
         lifecycleRules: [
@@ -169,7 +171,7 @@ export class ImageOptimizationStack extends Stack {
     // Create a CloudFront Function for url rewrites
     const urlRewriteFunction = new cloudfront.Function(this, 'urlRewrite', {
       code: cloudfront.FunctionCode.fromFile({ filePath: 'functions/url-rewrite/index.js', }),
-      functionName: `urlRewriteFunction${this.node.addr}`,
+      functionName: 'urlRewriteFunction' + toCamelCase(originalImageBucket.bucketName),
     });
 
     var imageDeliveryCacheBehaviorConfig: ImageDeliveryCacheBehaviorConfig = {
@@ -190,7 +192,7 @@ export class ImageOptimizationStack extends Stack {
     if (CLOUDFRONT_CORS_ENABLED === 'true') {
       // Creating a custom response headers policy. CORS allowed for all origins.
       const imageResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, `ResponseHeadersPolicy${this.node.addr}`, {
-        responseHeadersPolicyName: `ImageResponsePolicy${this.node.addr}`,
+        responseHeadersPolicyName: 'ImageResponsePolicy' + toCamelCase(originalImageBucket.bucketName),
         corsBehavior: {
           accessControlAllowCredentials: false,
           accessControlAllowHeaders: ['*'],
@@ -210,7 +212,7 @@ export class ImageOptimizationStack extends Stack {
       imageDeliveryCacheBehaviorConfig.responseHeadersPolicy = imageResponseHeadersPolicy;
     }
     const imageDelivery = new cloudfront.Distribution(this, 'imageDeliveryDistribution', {
-      comment: 'image optimization - image delivery',
+      comment: originalImageBucket.bucketName + ' - image optimization - image delivery',
       defaultBehavior: imageDeliveryCacheBehaviorConfig
     });
 
@@ -234,7 +236,7 @@ export class ImageOptimizationStack extends Stack {
     })
 
     new CfnOutput(this, 'ImageDeliveryDomain', {
-      description: 'Domain name of image delivery',
+      description: originalImageBucket.bucketName + ' domain name of image delivery',
       value: imageDelivery.distributionDomainName
     });
   }
