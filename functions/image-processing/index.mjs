@@ -68,6 +68,7 @@ export const handler = async (event) => {
             if (operationsJSON['quality'] && isLossy) {
                 transformedImage = transformedImage.toFormat(operationsJSON['format'], {
                     quality: parseInt(operationsJSON['quality']),
+                    mozjpeg: operationsJSON['format'] === 'jpeg',
                 });
             } else transformedImage = transformedImage.toFormat(operationsJSON['format']);
         } else {
