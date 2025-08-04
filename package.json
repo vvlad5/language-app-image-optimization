@@ -9,7 +9,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "deploy": "cdk deploy MovazaurImageTransformationStackDev -c S3_IMAGE_BUCKET_NAME=movazaur-dev",
+    "deploy:prod": "cdk deploy MovazaurImageTransformationStack -c S3_IMAGE_BUCKET_NAME=movazaur"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
