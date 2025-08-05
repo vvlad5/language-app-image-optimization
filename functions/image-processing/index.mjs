@@ -65,12 +65,12 @@ export const handler = async (event) => {
                 case 'avif': contentType = 'image/avif'; isLossy = true; break;
                 default: contentType = 'image/jpeg'; isLossy = true;
             }
-            if (operationsJSON['quality'] && isLossy) {
-                transformedImage = transformedImage.toFormat(operationsJSON['format'], {
-                    quality: parseInt(operationsJSON['quality']),
-                    mozjpeg: operationsJSON['format'] === 'jpeg',
-                });
-            } else transformedImage = transformedImage.toFormat(operationsJSON['format']);
+            transformedImage = transformedImage.toFormat(operationsJSON['format'], {
+                mozjpeg: operationsJSON['format'] === 'jpeg',
+                quality: operationsJSON['quality'] && isLossy
+                  ? parseInt(operationsJSON['quality'])
+                  : undefined,
+            });
         } else {
             /// If not format is precised, Sharp converts svg to png by default https://github.com/aws-samples/image-optimization/issues/48
             if (contentType === 'image/svg+xml') contentType = 'image/png';
