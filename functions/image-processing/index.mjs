@@ -57,31 +57,37 @@ export const handler = async (event) => {
         // check if formatting is requested
         if (operationsJSON['format']) {
             var isLossy = false;
-            switch (operationsJSON['format']) {
-                case 'jpeg': contentType = 'image/jpeg'; isLossy = true; break;
-                case 'gif': contentType = 'image/gif'; break;
-                case 'webp': contentType = 'image/webp'; isLossy = true; break;
-                case 'png': contentType = 'image/png'; break;
-                case 'avif': contentType = 'image/avif'; isLossy = true; break;
-                default: contentType = 'image/jpeg'; isLossy = true;
-            }
-            if (operationsJSON['quality'] && isLossy) {
-                transformedImage = transformedImage.toFormat(operationsJSON['format'], {
-                    quality: parseInt(operationsJSON['quality']),
-                    mozjpeg: operationsJSON['format'] === 'jpeg',
-                });
-            } else {
-                const defaultQualityMap = {
-                    'jpeg': 80, 'webp': 65, 'avif': 50,
-                };
+            var quality = undefined;
 
-                transformedImage = transformedImage.toFormat(operationsJSON['format'], {
-                    quality: defaultQualityMap[operationsJSON['format']],
-                    mozjpeg: operationsJSON['format'] === 'jpeg',
-                });
+            switch (operationsJSON['format']) {
+                case 'gif':
+                    contentType = 'image/gif';
+                    break;
+                case 'png':
+                    contentType = 'image/png';
+                    break;
+                case 'avif':
+                    contentType = 'image/avif';
+                    quality = 50;
+                    isLossy = true;
+                    break;
+                case 'webp':
+                    contentType = 'image/webp';
+                    quality = resizingOptions.width > 1200 ? 60 : 75;
+                    isLossy = true;
+                    break;
+                default:
+                    contentType = 'image/jpeg';
+                    quality = resizingOptions.width > 1200 ? 65 : 80;
+                    isLossy = true;
             }
+
+            transformedImage = transformedImage.toFormat(operationsJSON['format'], {
+                mozjpeg: operationsJSON['format'] === 'jpeg',
+                quality: isLossy ? quality : undefined,
+            });
         } else {
-            /// If not format is precised, Sharp converts svg to png by default https://github.com/aws-samples/image-optimization/issues/48
+            // If not format is precised, Sharp converts svg to png by default https://github.com/aws-samples/image-optimization/issues/48
             if (contentType === 'image/svg+xml') contentType = 'image/png';
         }
         transformedImage = await transformedImage.toBuffer();
