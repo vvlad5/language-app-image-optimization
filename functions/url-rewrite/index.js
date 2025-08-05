@@ -32,16 +32,6 @@ function handler(event) {
                         normalizedOperations['width'] = request.querystring[operation]['value'];
                     }
                     break;
-                case 'quality':
-                    var SUPPORTED_QUALITY = [90, 80, 70, 60, 50];
-                    if (request.querystring[operation]['value'] && SUPPORTED_QUALITY.includes(parseInt(request.querystring[operation]['value']))) {
-                        var quality = parseInt(request.querystring[operation]['value']);
-                        if (!isNaN(quality) && (quality > 0)) {
-                            if (quality > 100) quality = 100;
-                            normalizedOperations['quality'] = quality.toString();
-                        }
-                    }
-                    break;
                 default: break;
             }
         });
