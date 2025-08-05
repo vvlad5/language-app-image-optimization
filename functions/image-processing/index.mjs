@@ -90,6 +90,13 @@ export const handler = async (event) => {
     }
     timingLog = timingLog + ',img-transform;dur=' + parseInt(performance.now() - startTime);
 
+    // set generated image copyright
+    transformedImage.withExifMerge({
+        IFD0: {
+            Copyright: "Movazaur",
+        },
+    });
+
     // handle gracefully generated images bigger than a specified limit (e.g. Lambda output object limit)
     const imageTooBig = Buffer.byteLength(transformedImage) > MAX_IMAGE_SIZE;
 
