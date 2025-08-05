@@ -56,35 +56,25 @@ export const handler = async (event) => {
         if (imageMetadata.orientation) transformedImage = transformedImage.rotate();
         // check if formatting is requested
         if (operationsJSON['format']) {
-            var isLossy = false;
-            var quality = undefined;
+            var imageQuality;
 
             switch (operationsJSON['format']) {
-                case 'gif':
-                    contentType = 'image/gif';
-                    break;
-                case 'png':
-                    contentType = 'image/png';
-                    break;
                 case 'avif':
                     contentType = 'image/avif';
-                    quality = 50;
-                    isLossy = true;
+                    imageQuality = 50;
                     break;
                 case 'webp':
                     contentType = 'image/webp';
-                    quality = resizingOptions.width > 1080 ? 55 : 70;
-                    isLossy = true;
+                    imageQuality = resizingOptions.width > 1080 ? 55 : 70;
                     break;
                 default:
                     contentType = 'image/jpeg';
-                    quality = resizingOptions.width > 1080 ? 65 : 80;
-                    isLossy = true;
+                    imageQuality = resizingOptions.width > 1080 ? 65 : 80;
             }
 
             transformedImage = transformedImage.toFormat(operationsJSON['format'], {
                 mozjpeg: operationsJSON['format'] === 'jpeg',
-                quality: isLossy ? quality : undefined,
+                quality: imageQuality,
             });
         } else {
             // If not format is precised, Sharp converts svg to png by default https://github.com/aws-samples/image-optimization/issues/48
