@@ -73,7 +73,7 @@ export const handler = async (event) => {
                     break;
                 case 'webp':
                     contentType = 'image/webp';
-                    quality = resizingOptions.width > 1200 ? 60 : 75;
+                    quality = resizingOptions.width > 1200 ? 55 : 70;
                     isLossy = true;
                     break;
                 default:
