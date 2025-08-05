@@ -211,7 +211,7 @@ export class ImageOptimizationStack extends Stack {
       imageDeliveryCacheBehaviorConfig.responseHeadersPolicy = imageResponseHeadersPolicy;
     }
     const imageDelivery = new cloudfront.Distribution(this, 'imageDeliveryDistribution', {
-      comment: originalImageBucket.bucketName + ' - image optimization - image delivery',
+      comment: originalImageBucket.bucketName + ' image optimization',
       defaultBehavior: imageDeliveryCacheBehaviorConfig
     });
 
