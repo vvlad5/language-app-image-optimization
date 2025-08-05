@@ -27,12 +27,9 @@ function handler(event) {
                     }
                     break;
                 case 'width':
-                    if (request.querystring[operation]['value']) {
-                        var width = parseInt(request.querystring[operation]['value']);
-                        if (!isNaN(width) && (width > 0)) {
-                            // you can protect the Lambda function by setting a max value, e.g. if (width > 4000) width = 4000;
-                            normalizedOperations['width'] = width.toString();
-                        }
+                    var SUPPORTED_WIDTH = [160, 196, 256, 384, 428, 640, 750, 828, 1080, 1200, 1920];
+                    if (request.querystring[operation]['value'] && SUPPORTED_WIDTH.includes(parseInt(request.querystring[operation]['value']))) {
+                        normalizedOperations['width'] = request.querystring[operation]['value'];
                     }
                     break;
                 case 'quality':
