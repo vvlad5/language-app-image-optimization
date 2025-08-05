@@ -191,7 +191,7 @@ export class ImageOptimizationStack extends Stack {
 
     if (CLOUDFRONT_CORS_ENABLED === 'true') {
       // Creating a custom response headers policy. CORS allowed for all origins.
-      const imageResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, `ResponseHeadersPolicy${this.node.addr}`, {
+      const imageResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'ResponseHeadersPolicy' + toCamelCase(originalImageBucket.bucketName), {
         responseHeadersPolicyName: 'ImageResponsePolicy' + toCamelCase(originalImageBucket.bucketName),
         corsBehavior: {
           accessControlAllowCredentials: false,
