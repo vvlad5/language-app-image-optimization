@@ -178,7 +178,7 @@ export class ImageOptimizationStack extends Stack {
       origin: imageOrigin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: false,
-      cachePolicy: new cloudfront.CachePolicy(this, `ImageCachePolicy${this.node.addr}`, {
+      cachePolicy: new cloudfront.CachePolicy(this, 'ImageCachePolicy' + toCamelCase(originalImageBucket.bucketName), {
         defaultTtl: Duration.hours(24),
         maxTtl: Duration.days(365),
         minTtl: Duration.seconds(0)
