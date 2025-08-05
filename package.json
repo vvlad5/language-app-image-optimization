@@ -5,13 +5,15 @@
     "image-optimization": "bin/image-optimization.js"
   },
   "scripts": {
+    "cdk": "cdk",
+    "test": "jest",
     "prebuild": "npm install sharp --cpu=x64 --os=linux --libc=glibc --prefix functions/image-processing",
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
-    "cdk": "cdk",
     "deploy": "cdk deploy MovazaurImageTransformationStackDev -c S3_IMAGE_BUCKET_NAME=movazaur-dev",
-    "deploy:prod": "cdk deploy MovazaurImageTransformationStack -c S3_IMAGE_BUCKET_NAME=movazaur"
+    "deploy:prod": "cdk deploy MovazaurImageTransformationStack -c S3_IMAGE_BUCKET_NAME=movazaur",
+    "destroy": "cdk destroy MovazaurImageTransformationStackDev",
+    "destroy:prod": "cdk destroy MovazaurImageTransformationStack"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
