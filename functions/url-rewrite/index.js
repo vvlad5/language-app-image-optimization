@@ -10,7 +10,7 @@ function handler(event) {
         Object.keys(request.querystring).forEach(operation => {
             switch (operation.toLowerCase()) {
                 case 'format': 
-                    var SUPPORTED_FORMATS = ['auto', 'jpeg', 'webp', 'avif', 'png', 'svg', 'gif'];
+                    var SUPPORTED_FORMATS = ['auto', 'jpeg', 'webp', 'avif'];
                     if (request.querystring[operation]['value'] && SUPPORTED_FORMATS.includes(request.querystring[operation]['value'].toLowerCase())) {
                         var format = request.querystring[operation]['value'].toLowerCase(); // normalize to lowercase
                         if (format === 'auto') {
@@ -40,7 +40,6 @@ function handler(event) {
             // put them in order
             var normalizedOperationsArray = [];
             if (normalizedOperations.format) normalizedOperationsArray.push('format='+normalizedOperations.format);
-            if (normalizedOperations.quality) normalizedOperationsArray.push('quality='+normalizedOperations.quality);
             if (normalizedOperations.width) normalizedOperationsArray.push('width='+normalizedOperations.width);
             request.uri = originalImagePath + '/' + normalizedOperationsArray.join(',');     
         } else {
