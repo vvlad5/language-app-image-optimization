@@ -72,7 +72,7 @@ export const handler = async (event) => {
                 });
             } else {
                 const defaultQualityMap = {
-                    'jpeg': 80, 'webp': 70, 'avif': 50,
+                    'jpeg': 80, 'webp': 65, 'avif': 50,
                 };
 
                 transformedImage = transformedImage.toFormat(operationsJSON['format'], {
