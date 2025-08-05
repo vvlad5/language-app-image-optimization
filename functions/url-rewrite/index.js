@@ -15,15 +15,18 @@ function handler(event) {
                         var format = request.querystring[operation]['value'].toLowerCase(); // normalize to lowercase
 
                         if (format === 'auto') {
-                            if (request.headers['accept']?.value.includes("avif")) {
-                                format = 'avif';
-                            } else if (request.headers['accept']?.value.includes("webp")) {
-                                format = 'webp';
+                            if (request.headers['accept']) {
+                                if (request.headers['accept'].value.includes("avif")) {
+                                    format = 'avif';
+                                } else if (request.headers['accept'].value.includes("webp")) {
+                                    format = 'webp';
+                                }
                             }
                         }
 
                         normalizedOperations['format'] =
-                          request.headers['accept']?.value.includes(format) ? format : 'jpeg';
+                          request.headers['accept'] && request.headers['accept'].value.includes(format)
+                            ? format : 'jpeg';
                     }
                     break;
                 case 'width':
