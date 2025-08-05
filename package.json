@@ -10,10 +10,10 @@
     "prebuild": "npm install sharp --cpu=x64 --os=linux --libc=glibc --prefix functions/image-processing",
     "build": "tsc",
     "watch": "tsc -w",
-    "deploy": "cdk deploy MovazaurImageTransformationStackDev -c S3_IMAGE_BUCKET_NAME=movazaur-dev",
-    "deploy:prod": "cdk deploy MovazaurImageTransformationStack -c S3_IMAGE_BUCKET_NAME=movazaur",
-    "destroy": "cdk destroy MovazaurImageTransformationStackDev",
-    "destroy:prod": "cdk destroy MovazaurImageTransformationStack"
+    "deploy": "cdk deploy MovazaurImageOptimizationStackDev -c S3_IMAGE_BUCKET_NAME=movazaur-dev",
+    "deploy:prod": "cdk deploy MovazaurImageOptimizationStack -c S3_IMAGE_BUCKET_NAME=movazaur",
+    "destroy": "cdk destroy MovazaurImageOptimizationStackDev",
+    "destroy:prod": "cdk destroy MovazaurImageOptimizationStack"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
