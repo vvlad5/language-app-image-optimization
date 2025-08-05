@@ -10,7 +10,7 @@ function handler(event) {
         Object.keys(request.querystring).forEach(operation => {
             switch (operation.toLowerCase()) {
                 case 'format': 
-                    var SUPPORTED_FORMATS = ['auto', 'jpeg', 'webp', 'avif'];
+                    var SUPPORTED_FORMATS = ['auto', 'jpeg', 'webp'];
                     if (request.querystring[operation]['value'] && SUPPORTED_FORMATS.includes(request.querystring[operation]['value'].toLowerCase())) {
                         var format = request.querystring[operation]['value'].toLowerCase(); // normalize to lowercase
                         if (format === 'auto') {
@@ -47,7 +47,7 @@ function handler(event) {
 
     } else {
         // If no query strings are found, flag the request with /original path suffix
-        request.uri = originalImagePath + '/original'; 
+        request.uri = originalImagePath + '/original';
     }
     // remove query strings
     request['querystring'] = {};
