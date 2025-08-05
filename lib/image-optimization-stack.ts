@@ -88,7 +88,7 @@ export class ImageOptimizationStack extends Stack {
     // create bucket for transformed images if enabled in the architecture
     if (STORE_TRANSFORMED_IMAGES === 'true') {
       transformedImageBucket = new s3.Bucket(this, 's3-transformed-image-bucket', {
-        bucketName: 'transformed-' + originalImageBucket.bucketName,
+        bucketName: originalImageBucket.bucketName + '-transformed',
         removalPolicy: RemovalPolicy.DESTROY,
         autoDeleteObjects: true,
         lifecycleRules: [
