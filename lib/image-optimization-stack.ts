@@ -4,7 +4,6 @@
 import { Fn, Stack, StackProps, RemovalPolicy, aws_s3 as s3, aws_s3_deployment as s3deploy, aws_cloudfront as cloudfront, aws_cloudfront_origins as origins, aws_lambda as lambda, aws_iam as iam, Duration, CfnOutput, aws_logs as logs } from 'aws-cdk-lib';
 import { CfnDistribution } from "aws-cdk-lib/aws-cloudfront";
 import { Construct } from 'constructs';
-import { toCamelCase } from './utils';
 import { getOriginShieldRegion } from './origin-shield';
 
 // Stack Parameters
@@ -171,14 +170,14 @@ export class ImageOptimizationStack extends Stack {
     // Create a CloudFront Function for url rewrites
     const urlRewriteFunction = new cloudfront.Function(this, 'urlRewrite', {
       code: cloudfront.FunctionCode.fromFile({ filePath: 'functions/url-rewrite/index.js', }),
-      functionName: 'urlRewriteFunction' + toCamelCase(originalImageBucket.bucketName),
+      functionName: `urlRewriteFunction${this.node.addr}`,
     });
 
     var imageDeliveryCacheBehaviorConfig: ImageDeliveryCacheBehaviorConfig = {
       origin: imageOrigin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: false,
-      cachePolicy: new cloudfront.CachePolicy(this, 'ImageCachePolicy' + toCamelCase(originalImageBucket.bucketName), {
+      cachePolicy: new cloudfront.CachePolicy(this, `ImageCachePolicy${this.node.addr}`, {
         defaultTtl: Duration.hours(24),
         maxTtl: Duration.days(365),
         minTtl: Duration.seconds(0)
@@ -191,8 +190,8 @@ export class ImageOptimizationStack extends Stack {
 
     if (CLOUDFRONT_CORS_ENABLED === 'true') {
       // Creating a custom response headers policy. CORS allowed for all origins.
-      const imageResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, 'ResponseHeadersPolicy' + toCamelCase(originalImageBucket.bucketName), {
-        responseHeadersPolicyName: 'ImageResponsePolicy' + toCamelCase(originalImageBucket.bucketName),
+      const imageResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, `ResponseHeadersPolicy${this.node.addr}`, {
+        responseHeadersPolicyName: `ImageResponsePolicy${this.node.addr}`,
         corsBehavior: {
           accessControlAllowCredentials: false,
           accessControlAllowHeaders: ['*'],
