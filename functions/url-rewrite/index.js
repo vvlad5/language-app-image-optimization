@@ -16,9 +16,7 @@ function handler(event) {
                         if (format === 'auto') {
                             format = 'jpeg';
                             if (request.headers['accept']) {
-                                if (request.headers['accept'].value.includes("avif")) {
-                                    format = 'avif';
-                                } else if (request.headers['accept'].value.includes("webp")) {
+                                if (request.headers['accept'].value.includes("webp")) {
                                     format = 'webp';
                                 } 
                             }
