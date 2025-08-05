@@ -97,7 +97,7 @@ export const handler = async (event) => {
     timingLog = timingLog + ',img-transform;dur=' + parseInt(performance.now() - startTime);
 
     // set generated image copyright
-    transformedImage.withExifMerge({
+    transformedImage = transformedImage.withExifMerge({
         IFD0: {
             Copyright: "Movazaur",
         },
