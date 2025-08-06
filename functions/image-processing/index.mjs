@@ -65,11 +65,11 @@ export const handler = async (event) => {
                     break;
                 case 'webp':
                     contentType = 'image/webp';
-                    imageQuality = resizingOptions.width > 1080 ? 55 : 70;
+                    imageQuality = resizingOptions.width > 828 ? 50 : 70;
                     break;
                 default:
                     contentType = 'image/jpeg';
-                    imageQuality = resizingOptions.width > 1080 ? 65 : 80;
+                    imageQuality = resizingOptions.width > 828 ? 60 : 80;
             }
 
             transformedImage = transformedImage.toFormat(operationsJSON['format'], {
