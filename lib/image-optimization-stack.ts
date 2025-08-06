@@ -17,7 +17,7 @@ var CLOUDFRONT_ORIGIN_SHIELD_REGION = getOriginShieldRegion(process.env.AWS_REGI
 var CLOUDFRONT_CORS_ENABLED = 'true';
 // Parameters of transformed images
 var S3_TRANSFORMED_IMAGE_EXPIRATION_DURATION = '90';
-var S3_TRANSFORMED_IMAGE_CACHE_TTL = 'max-age=31622400';
+var S3_TRANSFORMED_IMAGE_CACHE_TTL = 'max-age=3600';
 // Max image size in bytes. If generated images are stored on S3, bigger images are generated, stored on S3
 // and request is redirect to the generated image. Otherwise, an application error is sent.
 var MAX_IMAGE_SIZE = '4700000';
