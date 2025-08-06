@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: MIT-0
 
 function handler(event) {
-    const request = event.request;
-    const originalImagePath = request.uri;
+    var request = event.request;
+    var originalImagePath = request.uri;
 
     //  validate, process and normalize the requested operations in query parameters
-    const normalizedOperations = {};
+    var normalizedOperations = {};
 
-    Object.keys(request.querystring).forEach(operation => {
+    Object.keys(request.querystring || {}).forEach(operation => {
         switch (operation.toLowerCase()) {
             case 'format':
-                const SUPPORTED_FORMATS = ['auto', 'jpeg', 'webp', 'avif'];
+                var SUPPORTED_FORMATS = ['auto', 'jpeg', 'webp', 'avif'];
 
                 if (request.querystring[operation]['value'] && SUPPORTED_FORMATS.includes(request.querystring[operation]['value'].toLowerCase())) {
-                    let format = request.querystring[operation]['value'].toLowerCase(); // normalize to lowercase
+                    var format = request.querystring[operation]['value'].toLowerCase(); // normalize to lowercase
 
                     if (format === 'auto') {
                         if (request.headers['accept']) {
@@ -33,7 +33,7 @@ function handler(event) {
 
                 break;
             case 'width':
-                const SUPPORTED_WIDTH = [160, 196, 256, 384, 428, 640, 750, 828, 1080, 1200, 1920];
+                var SUPPORTED_WIDTH = [160, 196, 256, 384, 428, 640, 750, 828, 1080, 1200, 1920];
 
                 if (request.querystring[operation]['value'] && SUPPORTED_WIDTH.includes(parseInt(request.querystring[operation]['value']))) {
                     normalizedOperations['width'] = request.querystring[operation]['value'];
@@ -46,7 +46,7 @@ function handler(event) {
     });
 
     //rewrite the path to normalized version, put them in order
-    const normalizedOperationsArray = [];
+    var normalizedOperationsArray = [];
 
     if (normalizedOperations.format) normalizedOperationsArray.push('format=' + normalizedOperations.format);
     if (normalizedOperations.width) normalizedOperationsArray.push('width=' + normalizedOperations.width);
