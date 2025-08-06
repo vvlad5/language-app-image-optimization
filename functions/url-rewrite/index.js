@@ -49,6 +49,8 @@ function handler(event) {
     var normalizedOperationsArray = [];
 
     if (normalizedOperations.format) normalizedOperationsArray.push('format=' + normalizedOperations.format);
+    else normalizedOperationsArray.push('format=' + 'jpeg');
+
     if (normalizedOperations.width) normalizedOperationsArray.push('width=' + normalizedOperations.width);
     else normalizedOperationsArray.push('width=' + 10);
 
